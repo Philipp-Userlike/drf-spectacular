@@ -175,6 +175,11 @@ def get_view_model(view, emit_warnings=True):
 
     if model is not None:
         return model
+    
+    if getattr(view, "serializer_class", None) is not None:
+        model = getattr(getattr(view.serializer_class, 'Meta', None), 'model', None)
+        if model is not None:
+            return model
 
     try:
         return view.get_queryset().model
